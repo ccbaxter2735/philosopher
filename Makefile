@@ -8,6 +8,8 @@ C_FILE		= main.c \
 						philo_utils.c \
 						routine.c \
 						action_philo.c \
+						time_management.c \
+						dead_management.c \
 
 SRC_DIR		=	./core/
 

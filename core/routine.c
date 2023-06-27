@@ -6,7 +6,7 @@
 /*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:28:25 by terussar          #+#    #+#             */
-/*   Updated: 2023/06/23 18:20:29 by terussar         ###   ########.fr       */
+/*   Updated: 2023/06/27 20:39:43 by terussar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,22 @@
 
 void	*threading(void *arg)
 {
-	t_philo *philo;
-	
+	t_philo	*philo;
+
 	philo = (t_philo *)arg;
-	philo->time = ft_time_us() - philo->start_time;
-	if (philo->id % 2 == 0)
+	if ((philo->id % 2 == 0 && philo->r_philo->nb_philo % 2 == 0) || (philo->r_philo->nb_philo % 2 == 1
+			&& philo->id == philo->r_philo->nb_philo))
+		ft_usleep(philo, philo->r_philo->time_to_eat - 10);
+	while (is_dead(philo) == 0)
 	{
-		ft_eat(philo);
-		while (is_dead(philo) == 0 && philo->nb_meal != 0)
-		{
-			ft_sleep(philo);
-			ft_think(philo);
-			ft_eat(philo);
-		}
+		if (ft_eat(philo) != 0)
+			break ;
+		if (philo->nb_meal == 1)
+			break ;
+		if (ft_sleep(philo) != 0)
+			break ;
+		if (ft_think(philo) != 0)
+			break ;
 	}
-	else
-	{
-		while (is_dead(philo) == 0 && philo->nb_meal != 0)
-		{
-			ft_sleep(philo);
-			ft_think(philo);
-			ft_eat(philo);
-		}
-	}
-	return NULL;
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:57:34 by terussar          #+#    #+#             */
-/*   Updated: 2023/06/21 15:17:16 by terussar         ###   ########.fr       */
+/*   Updated: 2023/06/26 21:05:54 by terussar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,11 @@ int	ft_atoi(char *str)
 	{
 		result = result * 10 + (str[i] - '0');
 		i++;
+	}
+	if (result <= 0)
+	{
+		ft_strerror("error\ninput must be positive\n");
+		return (-1);
 	}
 	return (result);
 }

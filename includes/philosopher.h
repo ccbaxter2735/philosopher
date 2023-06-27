@@ -6,7 +6,7 @@
 /*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:43:06 by terussar          #+#    #+#             */
-/*   Updated: 2023/06/23 17:59:22 by terussar         ###   ########.fr       */
+/*   Updated: 2023/06/27 19:13:54 by terussar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,15 @@
 
 typedef struct	s_rules
 {
-	int	nb_philo;
-	int	time_to_die;
-	int	time_to_eat;
-	int	time_to_sleep;
-	int	nb_x_eat; //option
+	int							nb_philo;
+	int							time_to_die;
+	int							time_to_eat;
+	int							time_to_sleep;
+	int							nb_x_eat; //option
+	pthread_mutex_t	write;
+	pthread_mutex_t	end;
+	int	end_b;
+	int	stop;
 }	t_rules;
 
 typedef	struct	s_philo
@@ -40,7 +44,6 @@ typedef	struct	s_philo
 	pthread_mutex_t	*mutex_id;
 	long	start_time;
 	long	last_time_eat;
-	long	last_time_sleep;
 	long	time;
 	struct s_data	*data;
 }	t_philo;
@@ -48,7 +51,6 @@ typedef	struct	s_philo
 typedef struct s_data
 {
 	t_philo *philo;
-	// pthread_mutex_t	*fork_id;
 	pthread_t *th_id;
 	t_rules rules;
 	pthread_mutex_t	mutex_id;
@@ -68,5 +70,8 @@ int		ft_think(t_philo *philo1);
 
 int		is_dead(t_philo	*philo);
 long	ft_time_us();
+void	ft_usleep(t_philo *philo, long time);
+void	take_time_and_str(t_philo *philo, char *str);
+int		check_death(t_philo *philo1, int i);
 
 #endif
