@@ -6,12 +6,12 @@
 /*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/19 18:43:06 by terussar          #+#    #+#             */
-/*   Updated: 2023/06/27 19:13:54 by terussar         ###   ########.fr       */
+/*   Updated: 2023/07/26 17:59:32 by terussar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILO
-# define PHILO
+#ifndef PHILOSOPHER_H
+# define PHILOSOPHER_H
 
 # include <stdlib.h>
 # include <unistd.h>
@@ -41,7 +41,7 @@ typedef	struct	s_philo
 	pthread_mutex_t fork_id;
 	pthread_mutex_t fork_id_next;
 	pthread_mutex_t	die_id;
-	pthread_mutex_t	*mutex_id;
+	// pthread_mutex_t	*mutex_id;
 	long	start_time;
 	long	last_time_eat;
 	long	time;
@@ -53,7 +53,7 @@ typedef struct s_data
 	t_philo *philo;
 	pthread_t *th_id;
 	t_rules rules;
-	pthread_mutex_t	mutex_id;
+	pthread_mutex_t	*mutex_id;
 	
 } t_data;
 

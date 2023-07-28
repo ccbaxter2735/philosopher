@@ -6,7 +6,7 @@
 /*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:37:58 by terussar          #+#    #+#             */
-/*   Updated: 2023/06/27 20:38:25 by terussar         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:09:17 by terussar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ int	ft_eat(t_philo *philo1)
 {
 	if (is_dead(philo1) == 0)
 	{
+		printf(" id %d - fork gauche %d - fork droite %d\n", philo1->id, philo1->fork_id, philo1->fork_id_next);
 		pthread_mutex_lock(&philo1->fork_id);
-
 		pthread_mutex_lock(&philo1->r_philo->write);
 		take_time_and_str(philo1, "has take a fork");
 		pthread_mutex_unlock(&philo1->r_philo->write);

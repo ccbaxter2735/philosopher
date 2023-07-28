@@ -6,7 +6,7 @@
 /*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 16:28:25 by terussar          #+#    #+#             */
-/*   Updated: 2023/06/27 20:39:43 by terussar         ###   ########.fr       */
+/*   Updated: 2023/07/26 18:12:58 by terussar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	*threading(void *arg)
 	{
 		if (ft_eat(philo) != 0)
 			break ;
-		if (philo->nb_meal == 1)
+		if (philo->nb_meal == 0)
 			break ;
 		if (ft_sleep(philo) != 0)
 			break ;
