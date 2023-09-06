@@ -1,17 +1,5 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: terussar <terussar@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/06/19 18:46:57 by terussar          #+#    #+#             */
-/*   Updated: 2023/07/26 18:27:34 by terussar         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../includes/philosopher.h"
-// parsing int et lettre
+
 void	initialize_arg(t_data *data, char **av, int ac)
 {
 	data->rules.nb_philo = ft_atoi(av[1]);
@@ -33,8 +21,11 @@ int	ft_malloc_thread(t_data *data)
 	if (!data->th_id)
 		return (1);
 	data->mutex_id = malloc(sizeof(pthread_mutex_t) * data->rules.nb_philo);
+	if (!data->mutex_id)
+		return (1);
 	ft_bzero(data->th_id, (sizeof(pthread_t) * data->rules.nb_philo));
 	ft_bzero(data->philo, (sizeof(t_philo) * data->rules.nb_philo));
+	// ft_bzero(data->mutex_id, (sizeof(pthread_mutex_t) * data->rules.nb_philo));
 	return (0);
 }
 
@@ -46,35 +37,18 @@ void	*initialize_thread(t_data *data)
 	i = 0;
 	if (ft_malloc_thread(data) == 1)
 		return (NULL);
-	// pthread_mutex_init(&data->mutex_id, NULL);
 	pthread_mutex_init(&data->rules.write, NULL);
-	tmp = ft_time_us();
+	tmp = ft_time();
 	while (i < data->rules.nb_philo)
 	{
 		data->philo[i].start_time = tmp;
 		data->philo[i].nb_meal = data->rules.nb_x_eat;
-		pthread_mutex_init(&data->mutex_id[i], NULL);
-		data->philo[i].fork_id = data->mutex_id[i];
-		printf("mutex fork l = %d - mutex init = %d\n", data->philo[i].fork_id, *data->mutex_id[i]);
-		i++;
-	}
-	i = 0;
-	while (i < data->rules.nb_philo)
-	{
-		if ((i + 1) != data->rules.nb_philo)
-			data->philo[i].fork_id_next = data->mutex_id[i + 1];
-		else
-			data->philo[i].fork_id_next = data->mutex_id[0];
-		printf("mutex fork l = %d - mutex fork d = %d - mutex init = %d\n", data->philo[i].fork_id, data->philo[i].fork_id_next, data->mutex_id[i]);
-		i++;
-	}
-	i = 0;
-	while (i < data->rules.nb_philo)
-	{
-		// data->philo[i].mutex_id = &data->mutex_id;
 		data->philo[i].id = i + 1;
-		data->philo[i].r_philo = &data->rules;
-		
+		data->philo[i].r_philo = data->rules.nb_philo;
+		data->philo[i].tab_fork[0] = (i + (i % 2)) % data->rules.nb_philo;
+		data->philo[i].tab_fork[1] = (i + !(i % 2)) % data->rules.nb_philo;
+		pthread_mutex_init(&(data->mutex_id[i]), NULL);
+		printf("mutex = %p\n", data->mutex_id[i]);
 		if (pthread_create(&data->th_id[i], NULL,
 				&threading, &data->philo[i]) != 0)
 			ft_strerror("error\nfailed to create thread\n");
@@ -85,13 +59,10 @@ void	*initialize_thread(t_data *data)
 	{
 		if (pthread_join(data->th_id[i], NULL) != 0)
 			ft_strerror("error\nfailed to join thread\n");
-		pthread_mutex_destroy(&data->philo[i].fork_id);
-		pthread_mutex_destroy(&data->philo[i].fork_id_next);
 		pthread_mutex_destroy(&data->mutex_id[i]);
 		i++;
 	}
 	pthread_mutex_destroy(&data->rules.write);
-	
 	return (NULL);
 }
 

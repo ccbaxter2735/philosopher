@@ -6,10 +6,10 @@ FLAGS			= -Wall -Wextra -Werror -g
 
 C_FILE		= main.c \
 						philo_utils.c \
+						philo_fct.c \
+						philo_fct2.c \
 						routine.c \
-						action_philo.c \
-						time_management.c \
-						dead_management.c \
+						dead.c \
 
 SRC_DIR		=	./core/
 
